@@ -47,34 +47,42 @@ export function VideoAppWithChatbotComponent () {
 
   const fetchStreamingApiResponse = async (userMessage: Message) => {
     // Example of a streaming API call
-    const apiUrl = process.env.NEXT_PUBLIC_STREAMING_API_URL || '/api/streaming-response';
+    const apiUrl = process.env.NEXT_PUBLIC_STREAMING_API_URL || 'https://learn-production-9d43.up.railway.app/rag/invoke';
 
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: userMessage.text })
+      body: JSON.stringify({ input: userMessage.text })
     })
 
-    const reader = response.body?.getReader()
-    const decoder = new TextDecoder('utf-8')
-    let done = false
 
-    while (!done) {
-      const { value, done: readerDone } = await reader?.read() || {}
-      done = readerDone ?? false
-
-      if (value) {
-        const chunk = decoder.decode(value, { stream: true })
-        const botResponse: Message = {
-          id: messages.length + 2,
-          text: chunk,
-          sender: 'bot'
-        }
-        setMessages(prevMessages => [...prevMessages, botResponse])
-      }
+    const data = await response.json();
+    const botResponse: Message = {
+      id: messages.length + 2,
+      text: data.output, // Assuming the API returns a field named 'responseText'
+      sender: 'bot'
     }
+    setMessages(prevMessages => [...prevMessages, botResponse])
+    // const reader = response.body?.getReader()
+    // const decoder = new TextDecoder('utf-8')
+    // let done = false
+
+    // while (!done) {
+    //   const { value, done: readerDone } = await reader?.read() || {}
+    //   done = readerDone ?? false
+
+    //   if (value) {
+    //     const chunk = decoder.decode(value, { stream: true })
+    //     const botResponse: Message = {
+    //       id: messages.length + 2,
+    //       text: chunk,
+    //       sender: 'bot'
+    //     }
+    //     setMessages(prevMessages => [...prevMessages, botResponse])
+    //   }
+    // }
   }
 
   const toggleSidebar = () => {
