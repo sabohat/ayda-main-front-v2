@@ -5,6 +5,7 @@ import ReactPlayer from 'react-player'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { IconClose, IconSidebar } from './ui/icons'
 
 interface Message {
   id: number
@@ -12,11 +13,20 @@ interface Message {
   sender: 'user' | 'bot'
 }
 
+const youtubeLinks = [
+  { id: 1, title: "Class 1", url: "https://www.youtube.com/watch?v=example1" },
+  { id: 2, title: "Class 2", url: "https://www.youtube.com/watch?v=example2" },
+  // Add more links as needed
+];
+
 export function VideoAppWithChatbotComponent () {
+
+
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: "Hello! How can I help you with the video?", sender: 'bot' }
   ])
   const [inputMessage, setInputMessage] = useState('')
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,10 +77,42 @@ export function VideoAppWithChatbotComponent () {
     }
   }
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  }
+
   return (
     <div className="flex flex-col md:flex-row w-full h-full bg-purple-100">
+      <button onClick={toggleSidebar} className="absolute top-2 left-2 p-2 bg-gray-800 text-white">
+        <IconSidebar className="size-8" />
+      </button>
+
+      {isSidebarOpen && (
+        <div className="md:w-1/4 bg-white shadow-md flex flex-col h-full">
+          <div className="p-4 bg-gray-800 text-white flex flex-row justify-between">
+            <h2 className="text-xl font-bold pl-12">Sidebar</h2>
+            <button onClick={toggleSidebar} className="">
+              <IconClose className="size-8" />
+            </button>
+          </div>
+          <div className="p-4">
+            <p>List of classes</p>
+            <ul>
+              {youtubeLinks.map(link => (
+                <li key={link.id}>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                    {link.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            {/* Add more sidebar content here */}
+          </div>
+        </div>
+      )}
+
       {/* Video Player */}
-      <div className="md:w-2/3">
+      <div className="flex-grow">
         <ReactPlayer
           url="https://www.youtube.com/watch?v=dLS450xck1I"
           width="100%"
@@ -90,7 +132,7 @@ export function VideoAppWithChatbotComponent () {
       </div>
 
       {/* Chatbot */}
-      <div className="md:w-1/3 bg-white shadow-md flex flex-col h-full">
+      <div className="md:w-1/4 bg-white shadow-md flex flex-col h-full">
         <div className="p-4 bg-gray-800 text-white">
           <h2 className="text-xl font-bold">Study buddy</h2>
         </div>
