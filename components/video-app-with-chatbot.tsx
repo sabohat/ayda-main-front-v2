@@ -14,8 +14,8 @@ interface Message {
 }
 
 const youtubeLinks = [
-  { id: 1, title: "Class 1", url: "https://www.youtube.com/watch?v=example1" },
-  { id: 2, title: "Class 2", url: "https://www.youtube.com/watch?v=example2" },
+  { id: 1, title: "Class 1", url: "https://studio.youtube.com/video/RzfxaTAlkaY" },
+  { id: 2, title: "Class 2", url: "https://studio.youtube.com/video/RzfxaTAlkaY" },
   // Add more links as needed
 ];
 
