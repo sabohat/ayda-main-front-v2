@@ -114,7 +114,7 @@ export function VideoAppWithChatbotComponent () {
       {/* Video Player */}
       <div className="flex-grow">
         <ReactPlayer
-          url="https://www.youtube.com/watch?v=dLS450xck1I"
+          url="https://youtu.be/RzfxaTAlkaY"
           width="100%"
           height="100%"
           controls
